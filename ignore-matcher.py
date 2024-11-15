@@ -22,7 +22,7 @@ class PathBasedPatterns:
     return self.exclude_patterns, self.include_patterns
 
 def check_pattern(pattern: str) -> bool:
-  # TODO: check grammar of given pattern
+  # TODO check grammar of given pattern
   if '!' == pattern[0]:
     return False
   else:
@@ -56,10 +56,14 @@ def read_ignore_file(ignore_file_abs: str):
   return PathBasedPatterns(base_path_abs, exclude_patterns, include_patterns)
 
 def matcher_impl(file_path_rel, pattern: str) -> bool:
+  # TODO parser
   return True
 
 def match_patterns(file_path_abs: str, path_based_patterns: PathBasedPatterns) -> bool:
   file_path_rel: str = os.path.relpath(path_based_patterns.base_path_abs, file_path_abs)
+  # TODO
+  #   1. use `include_patterns` and then `exclude_patterns`
+  #   2. call matcher_impl()
   return True
 
 def yield_matched_files(ignore_file_abs: str):
