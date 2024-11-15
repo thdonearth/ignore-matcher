@@ -65,7 +65,6 @@ def match_patterns(file_path_abs: str, path_based_patterns: PathBasedPatterns) -
 def yield_matched_files(ignore_file_abs: str):
   path_based_patterns = read_ignore_file(ignore_file)
 
-  matched_file_list = []
   for root, dirs, files in os.walk(os.getcwd()):
     for file in files
       file_path_abs = os.path.join(root, file)
