@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
-import sys
 import os
-import re
 import subprocess
-import pathlib
-import collections
 
 class PathBasedPatterns:
   def __init__(self, base_path_abs, exclude_patterns, include_patterns):
@@ -59,7 +55,7 @@ def matcher_impl(file_path_rel, pattern: str) -> bool:
   # TODO parser
   return True
 
-def match_patterns(file_path_abs: str, path_based_patterns: PathBasedPatterns) -> bool:
+def is_match_patterns(file_path_abs: str, path_based_patterns: PathBasedPatterns) -> bool:
   file_path_rel: str = os.path.relpath(path_based_patterns.base_path_abs, file_path_abs)
   # TODO
   #   1. use `include_patterns` and then `exclude_patterns`
@@ -67,17 +63,17 @@ def match_patterns(file_path_abs: str, path_based_patterns: PathBasedPatterns) -
   return True
 
 def yield_matched_files(ignore_file_abs: str):
-  path_based_patterns = read_ignore_file(ignore_file)
+  path_based_patterns = read_ignore_file(ignore_file_abs)
 
-  for root, dirs, files in os.walk(os.getcwd()):
-    for file in files
+  for root, _, files in os.walk(os.getcwd()):
+    for file in files:
       file_path_abs = os.path.join(root, file)
-      if match_patterns(file_path_abs, path_based_patterns) is True:
+      if is_match_patterns(file_path_abs, path_based_patterns) is True:
         yield file_path_abs
 
 if __name__ == "__main__":
   COMMAND_PREFIX = ["clang-format", "-i"]
-  for file in yield_matched_files(".clang-format-ignore"):
+  for file in yield_matched_files(os.path.abspath(".clang-format-ignore")):
     try:
       command = COMMAND_PREFIX + ['file']
       subprocess.run(command, check=True)
